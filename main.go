@@ -50,7 +50,8 @@ func loadTemplete(fileName string) (str string, err error) {
 func generateFile(project *Project, fileNames []string) error {
 	targetPath := project.BuildPath
 	for _, fileName := range fileNames {
-		buildPath := filepath.Join(targetPath, filepath.Dir(fileName))
+		targetFileName := filepath.Join(targetPath, fileName)
+		buildPath := filepath.Dir(targetFileName)
 		err := os.MkdirAll(buildPath, os.ModePerm)
 		if err != nil {
 			return err
@@ -63,10 +64,16 @@ func generateFile(project *Project, fileNames []string) error {
 		if err != nil {
 			return err
 		}
-		err = tmpl.Execute(os.Stdout, project)
+		file, err := os.Create(targetFileName)
 		if err != nil {
+			return nil
+		}
+		err = tmpl.Execute(file, project)
+		if err != nil {
+			file.Close()
 			return err
 		}
+		file.Close()
 
 	}
 	return nil

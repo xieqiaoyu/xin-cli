@@ -8,6 +8,7 @@ import (
 	"text/template"
 )
 
+//testDir 测试给定path 是否有问题
 func testDir(targetPath string, shouldBeEmpty bool) error {
 	f, err := os.Open(targetPath)
 	if err != nil {
@@ -34,11 +35,6 @@ func testDir(targetPath string, shouldBeEmpty bool) error {
 	return nil
 }
 
-func loadTemplete(fileName string) (str string, err error) {
-	templeteFilePath := fileName + ".template"
-	return packBox.FindString(templeteFilePath)
-}
-
 func generateFile(project *Project, fileNames []string) error {
 	targetPath := project.BuildPath
 	for _, fileName := range fileNames {
@@ -48,7 +44,7 @@ func generateFile(project *Project, fileNames []string) error {
 		if err != nil {
 			return err
 		}
-		templeteString, err := loadTemplete(fileName)
+		templeteString, err := LoadTemplete(fileName)
 		if err != nil {
 			return err
 		}
@@ -66,7 +62,6 @@ func generateFile(project *Project, fileNames []string) error {
 			return err
 		}
 		file.Close()
-
 	}
 	return nil
 }

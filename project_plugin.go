@@ -4,9 +4,15 @@ import (
 	"github.com/gobuffalo/packr/v2"
 )
 
+var packBox *packr.Box
+
 type templeteArgs struct {
 	Name       string
 	ModuleName string
+}
+
+func init() {
+	packBox = GetPackBox()
 }
 
 func GetBuildFiles() ([]string, error) {
@@ -27,4 +33,10 @@ func GetTempleteArgs() interface{} {
 
 func GetPackBox() *packr.Box {
 	return packr.New("tBox", "./templates")
+}
+
+//loadTemplete
+func LoadTemplete(fileName string) (str string, err error) {
+	templeteFilePath := fileName + ".template"
+	return packBox.FindString(templeteFilePath)
 }

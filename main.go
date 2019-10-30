@@ -2,14 +2,10 @@ package main
 
 import (
 	"fmt"
-	"github.com/gobuffalo/packr/v2"
 	"os"
 )
 
-var packBox *packr.Box
-
 func main() {
-	packBox = GetPackBox()
 	templeteArgs := GetTempleteArgs()
 	project := &Project{
 		BuildPath: "./project", //TODO:命令行指定

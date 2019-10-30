@@ -14,17 +14,10 @@ type Project struct {
 	BuildPath  string
 }
 
-func main() {
-
-	var allfiles = []string{
-		"main.go",
-		".gitignore",
-		"cmd/playground.go",
-		"metadata/metadata.go",
-	}
-
+func init() {
 	packBox = packr.New("tBox", "./templates")
-
+}
+func main() {
 	project := &Project{
 		Name:       "midas",
 		ModuleName: "github.com/xieqiaoyu/midas",

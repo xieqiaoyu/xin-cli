@@ -8,22 +8,20 @@ import (
 
 var packBox *packr.Box
 
-type Project struct {
-	Name       string
-	ModuleName string
-	BuildPath  string
-}
-
-func init() {
-	packBox = packr.New("tBox", "./templates")
-}
 func main() {
+	packBox = GetPackBox()
+	templeteArgs := GetTempleteArgs()
 	project := &Project{
-		Name:       "midas",
-		ModuleName: "github.com/xieqiaoyu/midas",
-		BuildPath:  "./project",
+		BuildPath: "./project", //TODO:命令行指定
+		tArgs:     templeteArgs,
 	}
-	err := testDir(project.BuildPath, true)
+
+	allfiles, err := GetBuildFiles()
+	if err != nil {
+		fmt.Println(err)
+		os.Exit(1)
+	}
+	err = testDir(project.BuildPath, true)
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)

@@ -60,7 +60,7 @@ func generateFile(project *Project, fileNames []string) error {
 		if err != nil {
 			return nil
 		}
-		err = tmpl.Execute(file, project)
+		err = tmpl.Execute(file, project.tArgs)
 		if err != nil {
 			file.Close()
 			return err

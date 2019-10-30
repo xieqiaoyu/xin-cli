@@ -1,0 +1,14 @@
+package main
+
+import (
+    localcmd "{{.ModuleName}}/cmd"
+    "{{.ModuleName}}/metadata"
+    "github.com/xieqiaoyu/xin/cmd"
+)
+
+func main() {
+    cmd.RootCmd().Use = metadata.Name
+    cmd.SetVersion(metadata.Version)
+    cmd.Execute()
+}
+

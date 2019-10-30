@@ -2,7 +2,10 @@ package main
 
 import (
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
 )
+
+var packBox *packr.Box
 
 type Project struct {
 	Name       string
@@ -18,10 +21,13 @@ func main() {
 		"cmd/playground.go",
 		"metadata/metadata.go",
 	}
+
+	packBox = packr.New("tBox", "./templates")
+
 	project := &Project{
 		Name:       "midas",
 		ModuleName: "github.com/xieqiaoyu/midas",
-		BuildPath:  "./artifact",
+		BuildPath:  "./project",
 	}
 	err := testDir(project.BuildPath, true)
 	if err != nil {

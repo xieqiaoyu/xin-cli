@@ -2,12 +2,18 @@ package main
 
 import (
 	"fmt"
+	"github.com/gobuffalo/packr/v2"
 	"io"
-	"io/ioutil"
 	"os"
 	"path/filepath"
 	"text/template"
 )
+
+var packBox *packr.Box
+
+func init() {
+	packBox = packr.New("tBox", "./templates")
+}
 
 func testDir(targetPath string, shouldBeEmpty bool) error {
 	f, err := os.Open(targetPath)
@@ -37,8 +43,7 @@ func testDir(targetPath string, shouldBeEmpty bool) error {
 
 func loadTemplete(fileName string) (str string, err error) {
 	templeteFilePath := "templetes/" + fileName + ".templete"
-	tbytes, err := ioutil.ReadFile(templeteFilePath)
-	return string(tbytes), err
+	return packBox.FindString(templeteFilePath)
 }
 
 func generateFile(project *Project, fileNames []string) error {

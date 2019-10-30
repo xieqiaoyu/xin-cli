@@ -1,13 +1,18 @@
 package main
 
 import (
-    localcmd "{{.ModuleName}}/cmd"
-    "{{.ModuleName}}/metadata"
-    "github.com/xieqiaoyu/xin/cmd"
+	_ "{{.ModuleName}}/cmd"
+	"{{.ModuleName}}/metadata"
+	"{{.ModuleName}}/router"
+	"github.com/xieqiaoyu/xin"
+	"github.com/xieqiaoyu/xin/cmd"
 )
 
 func main() {
-    cmd.RootCmd().Use = metadata.Name
-    cmd.SetVersion(metadata.Version)
-    cmd.Execute()
+	cmd.RootCmd().Use = metadata.Name
+	cmd.SetVersion(metadata.Version)
+	cmd.UseRouterRegister(router.Regist)
+	xin.Config().SetDefault("http.listen", ":8080")
+	//cmd.VerifyConfigBySchema(configScheme)
+	cmd.Execute()
 }

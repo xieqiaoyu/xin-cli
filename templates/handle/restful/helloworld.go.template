@@ -1,0 +1,14 @@
+package restful
+
+import (
+	"github.com/gin-gonic/gin"
+	"github.com/xieqiaoyu/xin/http/api"
+)
+
+func HelloWorld(c *gin.Context) {
+	data := map[string]interface{}{
+		"yes":"it works!",
+	}
+	api.SetData(c,data)
+	//api.SetError(c,fmt.Errorf("Opps"),1400)
+}

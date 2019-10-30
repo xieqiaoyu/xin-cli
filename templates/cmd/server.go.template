@@ -1,0 +1,9 @@
+package cmd
+
+import (
+	"github.com/xieqiaoyu/xin/cmd"
+)
+
+func init() {
+    cmd.RootCmd().AddCommand(cmd.HttpServerCmd())
+}

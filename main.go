@@ -3,6 +3,7 @@ package main
 import (
 	"fmt"
 	"github.com/gobuffalo/packr/v2"
+	"os"
 )
 
 var packBox *packr.Box
@@ -32,9 +33,11 @@ func main() {
 	err := testDir(project.BuildPath, true)
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 	err = generateFile(project, allfiles)
 	if err != nil {
 		fmt.Println(err)
+		os.Exit(1)
 	}
 }

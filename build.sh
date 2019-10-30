@@ -16,7 +16,7 @@ else
     binName+='.exe'
 fi
 
-packr2
+GO111MODULE=on packr2
 
 CGO_ENABLED=0 GOOS=${BUILDOS} GOARCH=${BUILDARCH} go build -ldflags "-X '${moduleName}/metadata.Version=${tag}' -X '${moduleName}/metadata.Platform=${BUILDOS}/${BUILDARCH}' -s -w" -o artifact/${binName} .
 

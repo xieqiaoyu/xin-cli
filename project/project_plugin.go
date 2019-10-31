@@ -1,6 +1,8 @@
 package project
 
 import (
+	"fmt"
+	"github.com/c-bata/go-prompt"
 	"github.com/gobuffalo/packr/v2"
 )
 
@@ -30,12 +32,25 @@ func GetBuildFiles() ([]string, error) {
 		//"static/configschema.json",
 	}, nil
 }
+func completer(d prompt.Document) []prompt.Suggest {
+	return []prompt.Suggest{}
+}
 
 //GetTempleteArgs 获取用于模板渲染的参数对象
 func GetTempleteArgs() interface{} {
+	var projectName, moduleName string
+	for projectName == "" {
+		fmt.Println("the project name ?")
+		projectName = prompt.Input("> ", completer)
+	}
+	for moduleName == "" {
+		fmt.Println("the module name ?")
+		moduleName = prompt.Input("> ", completer)
+	}
+
 	return &templeteArgs{
-		Name:       "midas",
-		ModuleName: "github.com/xieqiaoyu/midas",
+		Name:       projectName,
+		ModuleName: moduleName,
 	}
 }
 

@@ -7,4 +7,4 @@ require (
     github.com/xieqiaoyu/xin v0.0.0
 )
 
-replace github.com/xieqiaoyu/xin v0.0.0 => ../apeirophobia/xin
+replace github.com/xieqiaoyu/xin v0.0.0 => ../xin

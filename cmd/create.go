@@ -9,22 +9,28 @@ import (
 
 func CreateCmd() *cobra.Command {
 	return &cobra.Command{
-		Use:   "create",
+		Use:   "create [BUILDPATH]",
 		Short: "create a new project",
 		Long:  `create a new project`,
 		Run: func(cmd *cobra.Command, args []string) {
-			templeteArgs := project.GetTempleteArgs()
-			newProject := &project.Project{
-				BuildPath: "./project", //TODO:命令行指定
-				TArgs:     templeteArgs,
+			if len(args) <= 0 {
+				fmt.Println("need a build path")
+				os.Exit(1)
 			}
-
-			allfiles, err := project.GetBuildFiles()
+			buildpath := args[0]
+			err := project.TestDir(buildpath, true)
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)
 			}
-			err = project.TestDir(newProject.BuildPath, true)
+
+			templeteArgs := project.GetTempleteArgs()
+			newProject := &project.Project{
+				BuildPath: buildpath, //TODO:命令行指定
+				TArgs:     templeteArgs,
+			}
+
+			allfiles, err := project.GetBuildFiles()
 			if err != nil {
 				fmt.Println(err)
 				os.Exit(1)

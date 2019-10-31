@@ -1,0 +1,32 @@
+#! /usr/bin/env bash
+set -e
+
+case $1 in
+server)
+    args=http
+    ;;
+play)
+    args=play
+    ;;
+configtest)
+    args=configtest
+    ;;
+*)
+    echo Unknown operation
+    exit 2
+    ;;
+esac
+
+rm -rf ./artifact
+GOOS=linux go build -tags play -o artifact/bin .
+cp ./config.toml artifact/config.toml
+
+containerName=xin-devproject-{{.Name}}
+networkName=xin-project-net
+port=8080
+
+docker run -it --rm --name=${containerName} --network=${networkName} \
+    -v "${PWD}/artifact:/lab" \
+    -p ${port}:8080 \
+    -w "/lab" \
+    golang:1.13 ./bin ${args}

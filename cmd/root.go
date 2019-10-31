@@ -8,12 +8,7 @@ import (
 
 var (
 	rootCmd = &cobra.Command{
-		Use:   "xin",
-		Short: "",
-		Long:  ``,
-		Run: func(cmd *cobra.Command, args []string) {
-			fmt.Println("need a sub command")
-		},
+		Use: "xin",
 	}
 )
 

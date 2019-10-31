@@ -4,11 +4,10 @@ moduleName=github.com/xieqiaoyu/xin-cli
 
 BUILDARCH=amd64
 
-binName="xin-cli"
+binName="xin"
 
 if [[ ${OSTYPE} == darwin* ]]; then
     BUILDOS=darwin
-    echo "mac"
 elif [[ ${OSTYPE} == linux* ]]; then
     BUILDOS=linux
 else
@@ -18,6 +17,6 @@ fi
 
 GO111MODULE=on packr2
 
-CGO_ENABLED=0 GOOS=${BUILDOS} GOARCH=${BUILDARCH} go build -ldflags "-X '${moduleName}/metadata.Version=${tag}' -X '${moduleName}/metadata.Platform=${BUILDOS}/${BUILDARCH}' -s -w" -o artifact/${binName} .
+CGO_ENABLED=0 GOOS=${BUILDOS} GOARCH=${BUILDARCH} go build -ldflags "-X '${moduleName}/metadata.Version=${tag}' -X '${moduleName}/metadata.Platform=${BUILDOS}_${BUILDARCH}' -s -w" -o artifact/${binName} .
 
 packr2 clean

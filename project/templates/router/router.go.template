@@ -32,4 +32,3 @@ func Regist(r *gin.Engine) {
 		a.GET("/helloworld", restful.HelloWorld)
 	}
 }
-

@@ -1,4 +1,4 @@
-package main
+package project
 
 import (
 	"github.com/gobuffalo/packr/v2"

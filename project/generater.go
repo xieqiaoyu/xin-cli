@@ -1,4 +1,4 @@
-package main
+package project
 
 import (
 	"fmt"
@@ -8,14 +8,15 @@ import (
 	"text/template"
 )
 
-//testDir 测试给定path 是否有问题
-func testDir(targetPath string, shouldBeEmpty bool) error {
+//TestDir  test target path is avaliable ,dir with be maked if not exist
+func TestDir(targetPath string, shouldBeEmpty bool) error {
 	f, err := os.Open(targetPath)
 	if err != nil {
 		if os.IsNotExist(err) {
-			return fmt.Errorf("%s not exists ,%w", targetPath, err)
+			return nil
+		} else {
+			return err
 		}
-		return err
 	}
 	defer f.Close()
 	fileInfo, err := f.Stat()
@@ -25,7 +26,7 @@ func testDir(targetPath string, shouldBeEmpty bool) error {
 	if !fileInfo.IsDir() {
 		return fmt.Errorf("%s not a dir", targetPath)
 	}
-	if !shouldBeEmpty {
+	if shouldBeEmpty {
 		_, err = f.Readdirnames(1) // Or f.Readdir(1)
 		if err != io.EOF {
 			return fmt.Errorf("%s not an empty dir", targetPath)
@@ -35,7 +36,7 @@ func testDir(targetPath string, shouldBeEmpty bool) error {
 	return nil
 }
 
-func generateFile(project *Project, fileNames []string) error {
+func GenerateFile(project *Project, fileNames []string) error {
 	targetPath := project.BuildPath
 	for _, fileName := range fileNames {
 		targetFileName := filepath.Join(targetPath, fileName)
@@ -56,7 +57,7 @@ func generateFile(project *Project, fileNames []string) error {
 		if err != nil {
 			return nil
 		}
-		err = tmpl.Execute(file, project.tArgs)
+		err = tmpl.Execute(file, project.TArgs)
 		if err != nil {
 			file.Close()
 			return err

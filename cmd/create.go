@@ -1,0 +1,39 @@
+package cmd
+
+import (
+	"fmt"
+	"github.com/spf13/cobra"
+	"github.com/xieqiaoyu/xin-cli/project"
+	"os"
+)
+
+func CreateCmd() *cobra.Command {
+	return &cobra.Command{
+		Use:   "create",
+		Short: "create a new project",
+		Long:  `create a new project`,
+		Run: func(cmd *cobra.Command, args []string) {
+			templeteArgs := project.GetTempleteArgs()
+			newProject := &project.Project{
+				BuildPath: "./project", //TODO:命令行指定
+				TArgs:     templeteArgs,
+			}
+
+			allfiles, err := project.GetBuildFiles()
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			err = project.TestDir(newProject.BuildPath, true)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+			err = project.GenerateFile(newProject, allfiles)
+			if err != nil {
+				fmt.Println(err)
+				os.Exit(1)
+			}
+		},
+	}
+}

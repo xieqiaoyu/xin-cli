@@ -17,9 +17,11 @@ configtest)
     ;;
 esac
 
+echo "building binary.."
 rm -rf ./artifact
 GOOS=linux go build -tags play -o artifact/bin .
 cp ./config.toml artifact/config.toml
+echo "build success"
 
 containerName=xin-devproject-{{.Name}}
 networkName=xin-project-net

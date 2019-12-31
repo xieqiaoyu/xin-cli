@@ -9,6 +9,6 @@ func HelloWorld(c *gin.Context) {
 	data := map[string]interface{}{
 		"yes":"it works!",
 	}
-	api.SetData(c,data)
-	//api.SetError(c,fmt.Errorf("Opps"),1400)
+	api.SetData(data).Apply(c)
+	//api.SetStatus(1400).SetError(errors.New("Opps")).Apply(c)
 }

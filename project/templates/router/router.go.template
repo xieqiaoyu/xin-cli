@@ -1,6 +1,6 @@
+//Package router
+// http router and middleware
 package router
-
-//路由和中间键的配置
 
 import (
 	"github.com/gin-gonic/gin"
@@ -9,8 +9,8 @@ import (
 	mw "github.com/xieqiaoyu/xin/http/api/middleware"
 )
 
-//Regist 路由注册函数
-func Regist(r *gin.Engine) {
+//Register router register function
+func Register(r *gin.Engine) {
 	r.Use(gin.Logger(), gin.Recovery())
 
 	mode := xin.Mode()

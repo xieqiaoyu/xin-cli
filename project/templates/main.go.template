@@ -3,14 +3,12 @@ package main
 import (
 	_ "{{.ModuleName}}/cmd"
 	"{{.ModuleName}}/metadata"
-	"{{.ModuleName}}/router"
 	"github.com/xieqiaoyu/xin/cmd"
 )
 
 func main() {
 	cmd.RootCmd().Use = metadata.Name
 	cmd.SetVersion(metadata.Version)
-	cmd.UseRouterRegister(router.Register)
 	//cmd.VerifyConfigBySchema(configScheme)
 	cmd.Execute()
 }

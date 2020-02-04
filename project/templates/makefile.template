@@ -1,0 +1,3 @@
+.PHONY: server
+server:
+	@./run-dev.sh server

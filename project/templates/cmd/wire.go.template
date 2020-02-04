@@ -1,0 +1,24 @@
+//+build wireinject
+
+package main
+
+import (
+	"github.com/google/wire"
+	"github.com/spf13/cobra"
+	"github.com/xieqiaoyu/xin"
+	xhttp "github.com/xieqiaoyu/xin/http"
+)
+
+func InitializeRootCmd() (*cobra.Command, error) {
+	wire.Build(
+		cmdSet,
+	)
+	return &cobra.Command{}, nil
+}
+
+func InitializeHttpServer(config *xin.Config) (*xhttp.Server, error) {
+	wire.Build(
+		httpServerSet,
+	)
+	return &xhttp.Server{}, nil
+}

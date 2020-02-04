@@ -20,16 +20,19 @@ func init() {
 //GetBuildFiles 获取要构建的文件名列表（相对于构建路径）
 func GetBuildFiles() ([]string, error) {
 	return []string{
-		"main.go",
 		"go.mod",
+		"makefile",
+		"run-dev.sh",
+		"metadata/metadata.go",
+		"http/service.go",
+		"http/handler/restful/handler.go",
+		"http/handler/restful/helloworld.go",
+		"cmd/main.go",
+		"cmd/wire.go",
+		"cmd/inject_cmd.go",
+		"cmd/inject_http.go",
 		"config.toml",
 		".gitignore",
-		"cmd/playground.go",
-		"cmd/server.go",
-		"metadata/metadata.go",
-		"router/router.go",
-		"handle/restful/helloworld.go",
-		//"static/configschema.json",
 	}, nil
 }
 func completer(d prompt.Document) []prompt.Suggest {

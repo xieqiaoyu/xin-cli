@@ -1,0 +1,52 @@
+package main
+
+import (
+	"github.com/google/wire"
+	customhttp "{{.ModuleName}}/http"
+	"{{.ModuleName}}/http/handler/restful"
+	"github.com/xieqiaoyu/xin"
+	//"github.com/xieqiaoyu/xin/db/redis"
+	//db "github.com/xieqiaoyu/xin/db/sql"
+	xhttp "github.com/xieqiaoyu/xin/http"
+)
+
+var httpServerSet = wire.NewSet(
+	provideHttpServer,
+	provideEnv,
+	provideHttpService,
+	provideRestfulHandler,
+//	provideRedisService,
+//	provideDBService,
+)
+
+func provideHttpServer(
+	env *xin.EnvSetting,
+	config *xin.Config,
+	httpService *customhttp.Service) *xhttp.Server {
+	return xhttp.NewServer(env, config, httpService)
+}
+
+func provideEnv(config *xin.Config) *xin.EnvSetting {
+	return xin.NewEnvSetting(config)
+}
+
+func provideHttpService(
+	env *xin.EnvSetting,
+	config *xin.Config,
+	restful *restful.Handler) *customhttp.Service {
+	return customhttp.NewService(env, config, restful)
+}
+
+func provideRestfulHandler() *restful.Handler {
+	return restful.NewHandler()
+}
+
+/*
+func provideRedisService(config *xin.Config) *redis.Service {
+	return redis.NewService(config)
+}
+
+func provideDBService(config *xin.Config) *db.XormService {
+	return db.NewXormService(config)
+}
+*/

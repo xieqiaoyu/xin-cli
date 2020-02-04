@@ -1,12 +1,16 @@
 #env = "dev"
 
-#database_enable_log = true
-
-#[database_connections]
-#    CONNECT = "host=postgres port=5432 user=xxx dbname=xxx password=654321 sslmode=disable"
+#[db]
+#    driver="postgres"
+#    enable_log = true
+#    [db.example]
+#         source= "host=postgres port=5432 user=xxx dbname=xxx password=654321 sslmode=disable"
 
 #[redis_connections]
 #    CONNECT = "redis://:PASSWORD@redis:6379/1"
 
 #[http]
 #    listen=":8080"
+#
+#[grpc]
+#    listen=":50051"

@@ -1,0 +1,48 @@
+package http
+
+import (
+	"github.com/gin-gonic/gin"
+	"{{.ModuleName}}/http/handler/restful"
+	"github.com/xieqiaoyu/xin"
+	mw "github.com/xieqiaoyu/xin/http/api/middleware"
+)
+
+type Service struct {
+	Env     xin.Envirment
+	Config  *xin.Config
+	restful *restful.Handler
+}
+
+func NewService(
+	env xin.Envirment,
+	config *xin.Config,
+	restful *restful.Handler) *Service {
+	return &Service{
+		Env:     env,
+		Config:  config,
+		restful: restful,
+	}
+}
+
+func (s *Service) RegisterRouter(e *gin.Engine) {
+	e.Use(gin.Logger(), gin.Recovery())
+
+	mode := s.Env.Mode()
+	wrappers := mw.NewWrappers()
+	wrappers.SetDefault(mw.XinRESTfulWrapper(s.Env))
+	W := mw.WrapAPI(wrappers)
+
+	if mode != xin.ReleaseMode {
+		// 允许options CORS 请求并返回200
+		e.NoRoute(mw.CORS(), mw.OptionsOK())
+	}
+
+	a := e.Group("/api", W)
+	{
+		if mode != xin.ReleaseMode {
+			// 开发环境下允许CORS 调用
+			a.Use(mw.CORS())
+		}
+		a.GET("/helloworld", s.restful.HelloWorld)
+	}
+}

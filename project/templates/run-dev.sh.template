@@ -5,8 +5,8 @@ case $1 in
 server)
     args=http
     ;;
-play)
-    args=play
+version)
+    args=version
     ;;
 configtest)
     args=configtest
@@ -19,8 +19,8 @@ esac
 
 echo "building binary.."
 rm -rf ./artifact
-GOOS=linux go build -tags play -o artifact/bin .
-cp ./config.toml artifact/config.toml
+GOOS=linux go build -tags=usexorm -o artifact/bin ./cmd
+cp ./static/dev-config.toml artifact/config.toml
 echo "build success"
 
 containerName=xin-devproject-{{.Name}}

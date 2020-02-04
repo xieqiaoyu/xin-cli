@@ -1,0 +1,59 @@
+package main
+
+import (
+	"github.com/google/wire"
+	"github.com/spf13/cobra"
+	"{{.ModuleName}}/metadata"
+	"github.com/xieqiaoyu/xin"
+	xhttp "github.com/xieqiaoyu/xin/http"
+)
+
+var cmdSet = wire.NewSet(
+	provideRootCmd,
+	provideSubcmds,
+	provideConfig,
+	provideFileConfigLoader,
+	provideInitializeHttpServerFunc,
+)
+
+type SubCmds []*cobra.Command
+
+func provideSubcmds(config *xin.Config, initHttpServerFunc xhttp.InitializeServerFunc) SubCmds {
+	return SubCmds{
+		xhttp.NewHTTPCmd(initHttpServerFunc),
+		xin.NewConfigTestCmd(config),
+		xin.NewVersionCmd(metadata.Version),
+	}
+}
+
+func provideRootCmd(subcmds SubCmds, fileConfigLoader *xin.FileConfigLoader) *cobra.Command {
+	rootCmd := &cobra.Command{
+		Use:"{{.Name}}",
+	}
+	rootCmd.PersistentFlags().StringVarP(&fileConfigLoader.FileName, "config", "c", "", "specific config file")
+	for _, cmd := range subcmds {
+		rootCmd.AddCommand(cmd)
+	}
+	return rootCmd
+}
+
+func provideFileConfigLoader() *xin.FileConfigLoader {
+	return &xin.FileConfigLoader{
+		ConfigType: "toml",
+	}
+}
+
+func provideConfig(configLoader *xin.FileConfigLoader) *xin.Config {
+	return xin.NewConfig(configLoader, nil)
+}
+
+func provideInitializeHttpServerFunc(config *xin.Config) xhttp.InitializeServerFunc {
+	return func() (xhttp.ServerInterface, error) {
+		err := config.Init()
+		if err != nil {
+			return nil, err
+		}
+		return InitializeHttpServer(config)
+	}
+}
+

@@ -20,6 +20,7 @@ func RootCmd() *cobra.Command {
 func Execute() {
 	rootCmd.AddCommand(versionCmd())
 	rootCmd.AddCommand(CreateCmd())
+	rootCmd.AddCommand(GenApiReqSchemaCmd())
 	if err := rootCmd.Execute(); err != nil {
 		fmt.Println(err)
 		os.Exit(1)

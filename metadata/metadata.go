@@ -16,6 +16,8 @@ var (
 const versionString = `
 xin-cli (%s) on %s
 
+support for xin v0.4.0
+
 ---- Four words are enough -----
 
 `

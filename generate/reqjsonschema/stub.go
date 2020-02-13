@@ -12,7 +12,7 @@ import (
 )
 
 const (
-	SchemaCommentTag = "xin::yaml2jsonchema"
+	SchemaCommentTag = "xin::yaml2jsonschema"
 )
 
 type Schemas struct {

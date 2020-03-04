@@ -40,6 +40,7 @@ func LoadAndParse() (*Schemas, error) {
 		ast.Inspect(f, func(n ast.Node) bool {
 			switch x := n.(type) {
 			case *ast.FuncDecl:
+				funcName := x.Name.String()
 				var commentStr string
 				commentStr = x.Doc.Text()
 				schemaStartPos := strings.Index(commentStr, SchemaCommentTag)
@@ -70,7 +71,7 @@ func LoadAndParse() (*Schemas, error) {
 				}
 				if schemaName == "" {
 					//auto generate a schemaName
-					schemaName = x.Name.String() + "RequestSchema"
+					schemaName = funcName + "RequestSchema"
 				}
 
 				yamlschema := commentStr[schemaDefEndPos:]
@@ -83,12 +84,12 @@ func LoadAndParse() (*Schemas, error) {
 				if yamlschema != "" {
 					jsonStr, err := Yaml2Json([]byte(yamlschema))
 					if err != nil {
-						fmt.Printf("error: %s\n", err)
+						fmt.Printf("error parse %s : %s\n", funcName, err)
 						parseOK = false
 						return true
 					}
 					if _, exists := parseRes[schemaName]; exists {
-						fmt.Printf("error: conflict var:%s\n", schemaName)
+						fmt.Printf("error parse %s : conflict var:%s\n", funcName, schemaName)
 						parseOK = false
 						return true
 					}

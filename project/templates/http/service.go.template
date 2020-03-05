@@ -24,7 +24,7 @@ func NewService(
 	}
 }
 
-func (s *Service) RegisterRouter(e *gin.Engine) {
+func (s *Service) RegisterRouter(e *gin.Engine) error {
 	e.Use(gin.Logger(), gin.Recovery())
 
 	mode := s.Env.Mode()
@@ -45,4 +45,5 @@ func (s *Service) RegisterRouter(e *gin.Engine) {
 		}
 		a.GET("/helloworld", s.restful.HelloWorld)
 	}
+	return nil
 }

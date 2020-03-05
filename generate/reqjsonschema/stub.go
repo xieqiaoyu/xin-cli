@@ -94,6 +94,7 @@ func LoadAndParse() (*Schemas, error) {
 						return true
 					}
 					//TODO: use github.com/qri-io/jsonschema  to check error in valid jsonschema
+					//      seems we can not escape ` ....
 					parseRes[schemaName] = string(jsonStr)
 
 				}

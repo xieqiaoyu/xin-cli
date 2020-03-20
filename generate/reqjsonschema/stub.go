@@ -8,6 +8,8 @@ import (
 	"go/parser"
 	"go/token"
 	"gopkg.in/yaml.v2"
+	"os"
+	"strconv"
 	"strings"
 )
 
@@ -95,7 +97,8 @@ func LoadAndParse() (*Schemas, error) {
 					}
 					//TODO: use github.com/qri-io/jsonschema  to check error in valid jsonschema
 					//      seems we can not escape ` ....
-					parseRes[schemaName] = string(jsonStr)
+					//      we have to use quote to escape the json string
+					parseRes[schemaName] = strconv.Quote(string(jsonStr))
 
 				}
 			}
@@ -113,6 +116,42 @@ func LoadAndParse() (*Schemas, error) {
 		Vars:    parseRes,
 		Package: packageName,
 	}, nil
+}
+
+func CompareOldFile(schemas *Schemas, filename string) error {
+	oldVars := map[string]string{}
+	fileInfo, err := os.Stat(filename)
+	if err == nil && !fileInfo.IsDir() {
+		fset := token.NewFileSet()
+		f, err := parser.ParseFile(fset, filename, nil, 0)
+		if err != nil {
+			return err
+		}
+		ast.Inspect(f, func(n ast.Node) bool {
+			switch x := n.(type) {
+			case *ast.ValueSpec:
+				varName := x.Names[0].Name
+				varLit, ok := x.Values[0].(*ast.BasicLit)
+				// only string type accept
+				if ok && varLit.Kind == token.STRING {
+					varValue := varLit.Value
+					oldVars[varName] = varValue
+				}
+			}
+			return true
+		})
+	}
+	for name, value := range schemas.Vars {
+		if oldv, ok := oldVars[name]; ok {
+			if oldv != value {
+				fmt.Printf("Update %s\n", name)
+			}
+		} else {
+			fmt.Printf("Add %s\n", name)
+		}
+	}
+	// no report for missing old var
+	return nil
 }
 
 func Yaml2Json(yamldata []byte) (jsondata []byte, err error) {
@@ -146,18 +185,16 @@ func jsonConvert(m interface{}) (interface{}, error) {
 			}
 		}
 		return res, nil
-	/*
-		case []interface{}:
-			res := make([]interface{}, len(v))
-			for i, v2 := range v {
-				convertv, err := jsonConvert(v2)
-				if err != nil {
-					return nil, err
-				}
-				res[i] = convertv
+	case []interface{}:
+		res := make([]interface{}, len(v))
+		for i, v2 := range v {
+			convertv, err := jsonConvert(v2)
+			if err != nil {
+				return nil, err
 			}
-			return res, nil
-	*/
+			res[i] = convertv
+		}
+		return res, nil
 	default:
 		return m, nil
 	}

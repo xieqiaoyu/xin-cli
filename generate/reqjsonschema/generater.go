@@ -19,8 +19,12 @@ func LoadTemplate(fileName string) (str string, err error) {
 	return packBox.FindString(templeteFilePath)
 }
 
-//TODO: if gen success get more infomation such as new schema ,update schema...
 func GenerateFile(schemas *Schemas) error {
+	err := CompareOldFile(schemas, genfileName)
+	if err != nil {
+		println(err.Error())
+	}
+
 	templeteString, err := LoadTemplate(genfileName)
 	if err != nil {
 		return err

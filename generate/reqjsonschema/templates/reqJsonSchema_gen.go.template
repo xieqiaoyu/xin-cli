@@ -5,6 +5,6 @@
 package {{.Package}}
 
 const (
-	{{range $name,$value :=.Vars}}{{$name}}=`{{$value}}`
+	{{range $name,$value :=.Vars}}{{$name}}={{$value}}
 	{{end}}
 )

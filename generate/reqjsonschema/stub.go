@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
+	"github.com/qri-io/jsonschema"
 	"go/ast"
 	"go/parser"
 	"go/token"
@@ -95,6 +96,14 @@ func LoadAndParse() (*Schemas, error) {
 						parseOK = false
 						return true
 					}
+					rs := &jsonschema.RootSchema{}
+					if err := rs.UnmarshalJSON(jsonStr); err != nil {
+						fmt.Printf("error parse %s : wrong json schema ,%s\n", funcName, err)
+						parseOK = false
+						parseOK = false
+						return true
+					}
+
 					//TODO: use github.com/qri-io/jsonschema  to check error in valid jsonschema
 					//      seems we can not escape ` ....
 					//      we have to use quote to escape the json string

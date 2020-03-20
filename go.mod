@@ -7,6 +7,7 @@ require (
 	github.com/gobuffalo/packr/v2 v2.7.1
 	github.com/mattn/go-runewidth v0.0.5 // indirect
 	github.com/pkg/term v0.0.0-20190109203006-aa71e9d9e942 // indirect
+	github.com/qri-io/jsonschema v0.1.1
 	github.com/rogpeppe/go-internal v1.5.0 // indirect
 	github.com/spf13/cobra v0.0.5
 	github.com/spf13/pflag v1.0.5 // indirect
